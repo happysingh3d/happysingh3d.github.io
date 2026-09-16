@@ -1,0 +1,156 @@
+/* ===========================================================
+   Happy Singh 3D — shared design system
+   Dark theme. Every media box below is a fixed aspect-ratio
+   container with object-fit:cover, so dropping in ANY image or
+   video — no matter its native resolution — can never blow up
+   the layout or break spacing. That was the root problem in the
+   old portfolio-v4 page; this file fixes it structurally.
+=========================================================== */
+
+:root{
+  --bg: #0b0d10;
+  --bg-alt: #12151a;
+  --surface: #171b21;
+  --border: #262b33;
+  --text: #eef1f5;
+  --text-dim: #9aa3af;
+  --accent: #5eead4;   /* teal accent — swap freely */
+  --accent-2: #f472b6;
+  --radius: 14px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --maxw: 1180px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  line-height:1.55;
+}
+img,video{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);}
+
+/* ---------- Nav ---------- */
+.site-nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,13,16,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.site-nav .container{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.brand{font-weight:700;font-size:1.05rem;letter-spacing:.02em;}
+.brand span{color:var(--accent);}
+.nav-links{display:flex;gap:28px;list-style:none;margin:0;padding:0;}
+.nav-links a{
+  font-size:.92rem;color:var(--text-dim);
+  padding:6px 2px;border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text);border-color:var(--accent);}
+.nav-toggle{display:none;background:none;border:0;color:var(--text);font-size:1.4rem;cursor:pointer;}
+
+@media (max-width:760px){
+  .nav-toggle{display:block;}
+  .nav-links{
+    position:absolute;top:64px;left:0;right:0;
+    background:var(--bg-alt);border-bottom:1px solid var(--border);
+    flex-direction:column;gap:0;display:none;padding:8px 0;
+  }
+  .nav-links.open{display:flex;}
+  .nav-links a{padding:14px var(--gutter);width:100%;}
+}
+
+/* ---------- Hero ---------- */
+.hero{padding:88px 0 56px;text-align:center;}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);margin:0 0 14px;}
+.hero p{color:var(--text-dim);max-width:620px;margin:0 auto 30px;font-size:1.05rem;}
+.hero-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:34px;}
+.tag{
+  font-size:.78rem;color:var(--text-dim);
+  border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-block;padding:12px 24px;border-radius:10px;
+  font-weight:600;font-size:.92rem;border:1px solid var(--border);
+  transition:transform .15s,border-color .15s,background .15s;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:var(--accent);color:#04211c;border-color:var(--accent);}
+.btn-ghost{color:var(--text);}
+.btn-ghost:hover{border-color:var(--accent);}
+.btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* ---------- Section hub cards (index page) ---------- */
+.hub-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:22px;padding:10px 0 80px;
+}
+.hub-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;transition:border-color .15s,transform .15s;
+}
+.hub-card:hover{border-color:var(--accent);transform:translateY(-4px);}
+.hub-card .icon{font-size:1.8rem;margin-bottom:14px;display:block;}
+.hub-card h3{margin:0 0 8px;font-size:1.15rem;}
+.hub-card p{margin:0 0 18px;color:var(--text-dim);font-size:.92rem;}
+.hub-card .go{color:var(--accent);font-size:.88rem;font-weight:600;}
+
+/* ---------- Section heading ---------- */
+.section{padding:64px 0;}
+.section-head{max-width:640px;margin:0 auto 40px;text-align:center;}
+.section-head h2{font-size:clamp(1.5rem,3vw,2.1rem);margin:0 0 10px;}
+.section-head p{color:var(--text-dim);margin:0;}
+.eyebrow{
+  display:block;color:var(--accent);font-size:.78rem;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;
+}
+
+/* ---------- Media box: THE fix for oversized images ---------- */
+.media-box{
+  position:relative;width:100%;aspect-ratio:16/10;
+  overflow:hidden;border-radius:12px;background:var(--bg-alt);
+  border:1px solid var(--border);
+}
+.media-box.square{aspect-ratio:1/1;}
+.media-box.wide{aspect-ratio:21/9;}
+.media-box img,.media-box video,.media-box iframe{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;border:0;
+}
+.media-box.placeholder{
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:.8rem;text-align:center;padding:16px;
+}
+
+/* ---------- Project grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;
+}
+.card .body{padding:18px 20px 22px;}
+.card h3{margin:0 0 6px;font-size:1.05rem;}
+.card .meta{color:var(--text-dim);font-size:.82rem;margin:0 0 10px;}
+.card p{margin:0;color:var(--text-dim);font-size:.9rem;}
+
+/* ---------- Skill bars ---------- */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 32px;}
+.skill-row{margin-bottom:16px;}
+.skill-row .label{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:6px;}
+.skill-row .label span:last-child{color:var(--accent);}
+.bar{height:6px;border-radius:99px;background:var(--bg-alt);overflow:hidden;}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;color:var(--text-dim);font-size:.85rem;}
+footer a{color:var(--accent);}
