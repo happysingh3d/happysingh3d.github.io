@@ -13,13 +13,20 @@ window.PROJECTS = [
  {id:'short-film',type:'video',title:'A short story',category:'Short film',image:'short-film.png',description:'A short-film competition entry featuring acting and editing work.',role:'Acting & editing',tools:'Short-film production',embed:'https://www-ccv.adobe.io/v1/player/ccv/7tgFVSzNm6a/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View'}
 ];
 window.PRODUCTS = [
- {name:'Meshfill 2.0',tag:'BLENDER',detail:'Grid patches, radial caps & loop bridges.',url:'https://deadhunk.gumroad.com/l/vxigiq',symbol:'▦'},
- {name:'QuadFlow',tag:'BLENDER',detail:'Topology inspection and mesh cleanup.',url:'https://deadhunk.gumroad.com/l/krmazk',symbol:'⌗'},
- {name:'CableCrafter Pro',tag:'BLENDER',detail:'Cables and curve-based modeling.',url:'https://deadhunk.gumroad.com/l/rebvyi',symbol:'∿'},
- {name:'TexelScale',tag:'BLENDER',detail:'A consistent texture density workflow.',url:'https://deadhunk.gumroad.com/l/dvbum',symbol:'▧'},
- {name:'StackMaster',tag:'BLENDER',detail:'Batch modifier operations.',url:'https://deadhunk.gumroad.com/l/sthgv',symbol:'≋'},
- {name:'PurgeCraft',tag:'BLENDER',detail:'Clean up unused scene data.',url:'https://deadhunk.gumroad.com/l/reylp',symbol:'◇'},
- {name:'QuickGround',tag:'BLENDER',detail:'Origin-to-ground raycast tools.',url:'https://deadhunk.gumroad.com/l/wvqno',symbol:'⊥'},
- {name:'QuickID',tag:'BLENDER',detail:'Palette-based material ID painting.',url:'https://deadhunk.gumroad.com/l/kkttmz',symbol:'◫'},
- {name:'GameReady',tag:'BLENDER',detail:'LOD and asset export preparation.',url:'https://deadhunk.gumroad.com/l/bebyo',symbol:'△'}
+ {name:'UrbanCraft',tag:'BLENDER',detail:'Real-world cities from OpenStreetMap: roads, buildings and street detail.',url:'https://deadhunk.gumroad.com/l/sxikuz',symbol:'⌂'},
+ {name:'UnwrapCraft',tag:'BLENDER + MAYA',detail:'One-click UV unwrap, lightmap UVs and road UVs.',url:'https://deadhunk.gumroad.com/l/bwhxby',symbol:'⬚'},
+ {name:'Everything Pack',tag:'BUNDLE · 10 TOOLS',detail:'The Modeling Toolkit plus UnwrapCraft, Meshfill and MechAnatomy Craft.',url:'https://deadhunk.gumroad.com/l/ykdrdu',symbol:'✦'},
+ {name:'Modeling Toolkit',tag:'BUNDLE · 7 TOOLS',detail:'HardCraft, CableCrafter, GameReady, QuadFlow, OmniPivot, TexelScale and QuickID.',url:'https://deadhunk.gumroad.com/l/foopa',symbol:'❖'},
+ {name:'MechAnatomy Craft',tag:'BLENDER',detail:'Procedural internals, cutaways and exploded views.',url:'https://deadhunk.gumroad.com/l/dlcveq',symbol:'⚙'},
+ {name:'Meshfill 2.0',tag:'BLENDER + MAYA',detail:'Grid patches, radial caps & loop bridges.',url:'https://deadhunk.gumroad.com/l/vxigiq',symbol:'▦'},
+ {name:'HardCraft',tag:'BLENDER + MAYA',detail:'Boolean and bevel studio for hard-surface work.',url:'https://deadhunk.gumroad.com/l/xlqjabq',symbol:'◩'},
+ {name:'CableCrafter Pro',tag:'BLENDER + MAYA',detail:'Cables and curve-based modeling.',url:'https://deadhunk.gumroad.com/l/rebvyi',symbol:'∿'},
+ {name:'GameReady',tag:'BLENDER + MAYA',detail:'LODs, UCX collision and export naming.',url:'https://deadhunk.gumroad.com/l/bebyo',symbol:'△'},
+ {name:'QuadFlow',tag:'BLENDER + MAYA',detail:'Topology inspection and mesh cleanup.',url:'https://deadhunk.gumroad.com/l/krmazk',symbol:'⌗'},
+ {name:'OmniPivot',tag:'BLENDER + MAYA',detail:'9-point pivot snap and drop to floor.',url:'https://deadhunk.gumroad.com/l/lhjxf',symbol:'✛'},
+ {name:'TexelScale',tag:'BLENDER + MAYA',detail:'A consistent texture density workflow.',url:'https://deadhunk.gumroad.com/l/dvbum',symbol:'▧'},
+ {name:'QuickID',tag:'BLENDER + MAYA',detail:'Palette-based material ID painting.',url:'https://deadhunk.gumroad.com/l/kkttmz',symbol:'◫'},
+ {name:'QuickGround',tag:'BLENDER + MAYA · FREE',detail:'Origin-to-ground raycast tools.',url:'https://deadhunk.gumroad.com/l/wvqno',symbol:'⊥'},
+ {name:'PurgeCraft',tag:'BLENDER + MAYA · FREE',detail:'Clean up unused scene data.',url:'https://deadhunk.gumroad.com/l/reylp',symbol:'◇'},
+ {name:'StackMaster',tag:'BLENDER · FREE',detail:'Batch modifier operations.',url:'https://deadhunk.gumroad.com/l/sthgv',symbol:'≋'}
 ];
