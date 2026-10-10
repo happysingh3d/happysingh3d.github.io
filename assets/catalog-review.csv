@@ -1,0 +1,7 @@
+﻿Source_line,SKU,Product,Category,Price_INR,Stock,Updated,Reason
+7,0300,USB Cable,Accessories,,15,2026-10-03,Price missing or invalid for agreed INR format
+8,0310,Pen Set,Stationery,129,5,03/10/2026,"Date missing, invalid or ambiguous; ISO required"
+12,0501,'=1+1,Office,199,2,2026-10-05,Formula-like text; inspect before use
+17,0900,Glass Jar,Kitchen,two hundred,8,2026-10-08,Price missing or invalid for agreed INR format
+5,0250,Travel Mug,Kitchen,450.50,12,2026-10-03,Conflicting records for SKU; do not choose automatically
+6,0250,Travel Mug,Kitchen,499.00,12,2026-10-03,Conflicting records for SKU; do not choose automatically
