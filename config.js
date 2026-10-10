@@ -1,6 +1,6 @@
 window.SITE = {
   name: 'Happy Singh', fullName: 'Harpreet Singh Uppal',
-  email: 'harpreetsingh2604@gmail.com',
+  email: 'harpreetsinghuppal26@gmail.com',
   store: 'https://deadhunk.gumroad.com/',
   toolkit: 'https://happysingh3d.com/3d-toolkit/',
   portfolios: {
