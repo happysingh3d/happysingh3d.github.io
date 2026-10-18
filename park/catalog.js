@@ -131,10 +131,18 @@ export const BUILDINGS = [
     items: [{ id, title, kind: 'link', href: gum(slug), hrefLabel: 'View on Gumroad', description: `${sub}. A Blender add-on sold on Gumroad.`, meta: 'Blender add-on' }],
   })),
   {
+    id: 'shop-happy3d', type: 'shop', icon: 'radial', at: P(101, 86), w: 6, d: 5, h: 4.6, overview: false,
+    title: 'Happy3D', sub: 'Maya-style controls, Blender', district: 'Tool market', accent: '#e8a33d', body: '#fbe6c4',
+    tagline: 'Free and open source. In development.',
+    items: [{ id: 'happy3d', title: 'Happy3D', kind: 'note', badge: 'In development',
+      description: 'A free, open-source Blender add-on for artists coming from Maya: right-click marking menus, Shift and Ctrl right-click menus, and Maya hotkeys for modelling, UVs, rigging, skinning, sculpting and animation, on top of Blender’s own keymap. Built for Blender 5.2 LTS.',
+      meta: 'Blender add-on, Python, GPL · coming soon' }],
+  },
+  {
     id: 'about', type: 'kiosk', at: [12, 122], face: [0, 122], w: 5, d: 3.6, h: 3.6,
     title: 'About Happy', sub: 'Who made this park', district: 'Welcome', accent: '#3f8f5a',
     tagline: 'Who built this park, and how to reach him.',
-    items: [{ id: 'about', title: 'Hello', kind: 'about', body: [
+    items: [{ id: 'about', title: 'Hello', kind: 'about', photo: img('happy-portrait'), body: [
       'I’m Happy Singh (Harpreet Singh Uppal), a 3D artist and animator in Mohali, India. I model, rig, texture and animate for games and real-time apps, and I build the tools and small games you’ll find around this park.',
       'AI helps me explore and move fast at the start. The finishing — topology, UVs, materials, timing — I do by hand.',
       'Every building here holds a piece of my work. Empty plots are where new pieces will move in.',
@@ -201,14 +209,30 @@ export const BUILDINGS = [
         description: 'A typographic composition.', meta: 'Typography' },
     ],
   },
-  { id: 'plot-1', type: 'plot', at: P(324, 100), w: 16, d: 14, overview: false, title: 'Coming soon', sub: 'New work moves in here', district: 'Empty plot', accent: '#e07a2d', items: [] },
+  {
+    id: 'frontier', type: 'outpost', at: P(324, 104), w: 14, d: 10, h: 6.5,
+    title: 'Project Frontier', sub: 'Survival game in Unity, in development', district: 'Games in development', accent: '#d98a3a',
+    tagline: 'A first-person survival game. The war ended; the instructions didn’t.',
+    items: [{ id: 'frontier', title: 'Project Frontier', kind: 'images', cover: img('frontier-river'),
+      images: [['River, in the engine', img('frontier-river')], ['Meadow, in the engine', img('frontier-meadow')], ['Forest, in the engine', img('frontier-forest')], ['Concept: the starting region', img('frontier-concept-start')], ['Concept: the reclaimed world', img('frontier-concept-reclaimed')]],
+      description: 'My first-person survival game in Unity, in development: procedural terrain, rivers and forests, survival needs, tools and a day–night sky. The first three pictures are captured in the engine. The two concept boards set the look of the world.',
+      meta: 'Unity (URP), C#, procedural terrain · in development' }],
+  },
+  {
+    id: 'itch', type: 'marquee', at: P(284, 96), w: 10, d: 3, h: 9, opens: 'link', href: 'https://deadhunk.itch.io/',
+    title: '18 games on itch.io', sub: 'Browser games: opens itch.io', district: 'Games', accent: '#fa5c5c',
+    tagline: 'Eighteen browser games, from bullet-heaven to streamer party games.',
+    games: ['Hive Adapt', 'Shardfall', 'Block City Mayhem', 'Marble Mayhem', 'Chat Court', 'Chat Royale', 'Crowd Defusal', 'Dungeon Panic', 'Titan Rumble', 'Aetherforge', 'Rhythm Surge', 'Shadow Blade', 'Cosmic Forge', 'Abyss Deck', 'Void Drifter', 'Neon Grid', 'Deep Core', 'Chrono Survivors'],
+    items: [{ id: 'itch', title: 'DeadHunk on itch.io', kind: 'link', href: 'https://deadhunk.itch.io/', hrefLabel: 'See all 18 games',
+      description: 'Eighteen games that play in the browser: Hive Adapt, Shardfall, Block City Mayhem, Marble Mayhem, Chrono Survivors, Rhythm Surge, Shadow Blade, Void Drifter and more, including party games made for streamers and their chat.', meta: 'Browser games' }],
+  },
   { id: 'plot-2', type: 'plot', at: P(344, 104), w: 14, d: 12, overview: false, title: 'Coming soon', sub: 'New work moves in here', district: 'Empty plot', accent: '#e07a2d', items: [] },
 ];
 
 // Extra name tags shown from above for groups of buildings.
 export const AREAS = [
   { title: 'Product studios', sub: 'Speaker, chair and lamp, turning in glass', at: P(43, 102), y: 24, accent: '#c9724e', focus: 'forma' },
-  { title: 'Tool market', sub: 'Nine Blender add-ons, one shop each', at: P(140, 88), y: 10, accent: '#2f9c95', focus: 'shop-gameready' },
+  { title: 'Tool market', sub: 'Blender add-ons, one shop each', at: P(140, 88), y: 10, accent: '#2f9c95', focus: 'shop-gameready' },
 ];
 
 // Shortcut chips along the bottom of the park.
@@ -218,6 +242,7 @@ export const CHIPS = [
   { label: 'Products', id: 'forma' },
   { label: 'Games', id: 'game-foxfire' },
   { label: 'Characters', id: 'characters', open: true },
+  { label: 'Frontier', id: 'frontier', open: true },
   { label: 'Tools', id: 'shop-gameready' },
   { label: 'Design', id: 'design', open: true },
   { label: 'Video', id: 'video', open: true },
@@ -226,9 +251,9 @@ export const CHIPS = [
 // Sections for the plain list view (classic.html, kept as a no-3D fallback).
 export const GROUPS = [
   { title: '3D and animation', tagline: 'Rigs, character animation, real-time effects and product renders.', ids: ['animation', 'aster', 'forma', 'arc'] },
-  { title: 'Games', tagline: 'Games built for Project 0, plus Hive Adapt on itch.io.', ids: ['game-foxfire', 'game-mirror', 'game-hive', 'game-neon'] },
+  { title: 'Games', tagline: 'Games built for Project 0, plus Hive Adapt on itch.io.', ids: ['game-foxfire', 'game-mirror', 'game-hive', 'game-neon', 'frontier', 'itch'] },
   { title: 'Characters', tagline: 'Characters built for Project 0.', ids: ['characters'] },
-  { title: 'Tools for artists', tagline: 'A free web toolkit and Blender add-ons on Gumroad.', ids: ['toolkit', ...TOOLS.map(t => `shop-${t[0]}`)] },
+  { title: 'Tools for artists', tagline: 'A free web toolkit and Blender add-ons on Gumroad.', ids: ['toolkit', 'shop-happy3d', ...TOOLS.map(t => `shop-${t[0]}`)] },
   { title: 'Graphic design', tagline: 'Brand identity, packaging and typography.', ids: ['design'] },
   { title: 'Video editing', tagline: 'Television edits, motion graphics and short film.', ids: ['video'] },
   { title: 'About', tagline: 'Who made this, and how to reach him.', ids: ['about'] },

@@ -127,6 +127,7 @@ function fillStage(stage, item) {
     case 'model': return modelStage(stage, item);
     case 'link': return linkStage(stage, item);
     case 'about': return aboutStage(stage, item);
+    case 'note': return stage.append(el('div', { class: 'link-card' }, el('div', { class: 'link-glyph', 'aria-hidden': 'true' }, item.title.slice(0, 1)), item.badge ? el('span', { class: 'badge' }, item.badge) : null));
   }
 }
 
@@ -174,6 +175,7 @@ function linkStage(stage, item) {
 
 function aboutStage(stage, item) {
   stage.append(el('div', { class: 'about' },
+    item.photo ? el('img', { class: 'about-photo', src: item.photo, alt: 'Happy Singh', width: 160, height: 160 }) : null,
     item.body.map(p => el('p', {}, p)),
     el('p', {}, el('a', { class: 'btn', href: `mailto:${SITE.email}?subject=Project%20enquiry` }, 'Email me')),
     el('ul', { class: 'about-links' }, SITE.links.map(([label, href]) => el('li', {}, el('a', { href, target: '_blank', rel: 'noopener' }, label))))));
