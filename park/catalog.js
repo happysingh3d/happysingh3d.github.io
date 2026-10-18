@@ -32,7 +32,8 @@ const A = (a, d, s = 0) => { const t = a * Math.PI / 180; return [+(Math.sin(t) 
 export { A };
 // The park is a fountain plaza with six district avenues. Each avenue has its own exhibits along the way.
 export const AVENUES = [
-  { id: 'north', angle: 0, length: 128, width: 7 },
+  { id: 'north', angle: 0, length: 136, width: 7 },
+  { id: 'design', angle: 45, length: 90, width: 6 },
   { id: 'east', angle: 90, length: 117, width: 7 },
   { id: 'market', angle: 140, length: 98, width: 10 },
   { id: 'south', angle: 180, length: 156, width: 7 },
@@ -69,7 +70,7 @@ const GAME_CONTROLS = {
 
 export const BUILDINGS = [
   {
-    id: 'animation', type: 'tower', at: A(0, 140), w: 20, d: 20, h: 54,
+    id: 'animation', type: 'tower', at: A(0, 148), w: 20, d: 20, h: 54,
     title: 'Animation tower', sub: 'Rigs, character motion, effects', district: '3D and animation',
     accent: '#3d8fb8', tagline: 'Maya rigs, character animation and real-time effects.', site: SITES.portfolio3d,
     items: [
@@ -108,7 +109,7 @@ export const BUILDINGS = [
       meta: 'Concept study, Blender and Cycles, AI-assisted scripting' }],
   },
   {
-    id: 'arc', type: 'showroom', variant: 'round', at: A(0, 112, -17), face: A(0, 112), r: 7.5, h: 13, overview: false,
+    id: 'arc', type: 'showroom', variant: 'round', at: A(0, 118, 18), face: A(0, 118), r: 7.5, h: 13, overview: false,
     model: 'assets/products/arc-lamp.glb', productH: 6.8,
     title: 'Arc lamp', sub: 'Brass desk lamp', district: 'Product studios', accent: '#5b7bd5',
     tagline: 'A desk lamp concept rendered in Blender.',
@@ -222,7 +223,7 @@ export const BUILDINGS = [
     ],
   },
   {
-    id: 'design', type: 'design', at: A(90, 86, -27), face: A(90, 86), w: 22, d: 16, h: 19, opens: 'site', site: SITES.graphic,
+    id: 'design', type: 'design', at: A(45, 98), w: 22, d: 16, h: 19, opens: 'site', site: SITES.graphic,
     title: 'Design studio', sub: 'Opens the graphic design website', district: 'Graphic design', accent: '#0d99ff',
     tagline: 'Brand identity, packaging and typography.',
     items: [
@@ -257,7 +258,8 @@ export const BUILDINGS = [
 // Extra name tags shown from above for groups of buildings.
 export const AREAS = [
   { title: '3D street', sub: 'Creatures, animation, products, characters', at: A(0, 66), y: 12, accent: '#3d8fb8', focus: 'characters' },
-  { title: 'Studio walk', sub: 'Video and graphic design', at: A(90, 62), y: 12, accent: '#d4577a', focus: 'design' },
+  { title: 'Video street', sub: 'Edits, motion graphics, short film', at: A(90, 62), y: 12, accent: '#d4577a', focus: 'video' },
+  { title: 'Design walk', sub: 'Brand, packaging, typography', at: A(45, 52), y: 12, accent: '#0d99ff', focus: 'design' },
   { title: 'Tool market', sub: 'Blender add-ons, one shop each', at: A(140, 56), y: 10, accent: '#2f9c95', focus: 'shop-gameready' },
   { title: 'Games street', sub: 'Project 0 builds and more games', at: A(255, 68), y: 12, accent: '#f0a030', focus: 'game-foxfire' },
   { title: 'Frontier trail', sub: 'Games in development', at: A(315, 58), y: 10, accent: '#d98a3a', focus: 'frontier' },
@@ -285,13 +287,13 @@ export const EXHIBITS = [
   { avenue: 0, d: 74, side: -1, kind: 'poster', building: 'animation', item: 'particles' },
   { avenue: 0, d: 74, side: 1, kind: 'model', building: 'creatures', item: 'hiveboss', h: 2.8 },
   { avenue: 0, d: 82, side: 1, kind: 'model', building: 'creatures', item: 'matriarch', h: 2.6 },
-  { avenue: 0, d: 120, side: 1, kind: 'poster', building: 'animation', item: 'pipeline' },
-  { avenue: 90, d: 26, side: 1, kind: 'screen', building: 'video', item: 'judge-edit' },
-  { avenue: 90, d: 40, side: 1, kind: 'screen', building: 'video', item: 'motion' },
-  { avenue: 90, d: 54, side: 1, kind: 'screen', building: 'video', item: 'short-film' },
-  { avenue: 90, d: 26, side: -1, kind: 'easel', building: 'design', item: 'brand' },
-  { avenue: 90, d: 40, side: -1, kind: 'easel', building: 'design', item: 'honey' },
-  { avenue: 90, d: 54, side: -1, kind: 'easel', building: 'design', item: 'typography' },
+  { avenue: 0, d: 104, side: -1, kind: 'poster', building: 'animation', item: 'pipeline' },
+  { avenue: 90, d: 30, side: 1, kind: 'screen', building: 'video', item: 'judge-edit' },
+  { avenue: 90, d: 50, side: -1, kind: 'screen', building: 'video', item: 'motion' },
+  { avenue: 90, d: 70, side: 1, kind: 'screen', building: 'video', item: 'short-film' },
+  { avenue: 45, d: 30, side: -1, kind: 'easel', building: 'design', item: 'brand' },
+  { avenue: 45, d: 46, side: 1, kind: 'easel', building: 'design', item: 'honey' },
+  { avenue: 45, d: 62, side: -1, kind: 'easel', building: 'design', item: 'typography' },
   { avenue: 315, d: 30, side: -1, kind: 'poster', building: 'frontier', item: 'frontier', image: 3 },
   { avenue: 315, d: 30, side: 1, kind: 'poster', building: 'frontier', item: 'frontier', image: 0 },
   ...[[22, -1], [22, 1], [64, -1], [64, 1], [108, -1], [108, 1]].map(([d, side], i) => ({ avenue: 255, d, side, kind: 'standee',

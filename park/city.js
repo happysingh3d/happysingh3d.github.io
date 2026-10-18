@@ -185,14 +185,14 @@ async function init() {
       const room = tex2d(512, 600, (c, w, h) => { const gr = c.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#0f2c4a'); gr.addColorStop(1, '#2a1650'); c.fillStyle = gr; c.fillRect(0, 0, w, h); c.strokeStyle = 'rgba(143,230,255,.55)'; c.lineWidth = 3; for (let i = 0; i <= 10; i++) { const y = h * 0.62 + (h * 0.38) * Math.pow(i / 10, 1.8); c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); } for (let i = -6; i <= 16; i++) { c.beginPath(); c.moveTo(w * 0.5 + (i - 5) * 18, h * 0.62); c.lineTo(w * 0.5 + (i - 5) * 120, h); c.stroke(); } });
       const wingA = new THREE.Mesh(new THREE.PlaneGeometry(bbW, bbH), basic(room)); wingA.position.set(cx + bbW / 2, by + bbH / 2, cz + 0.35);
       const wingB = new THREE.Mesh(new THREE.PlaneGeometry(bbW, bbH), basic(room)); wingB.position.set(cx - 0.35, by + bbH / 2, cz - bbW / 2); wingB.rotation.y = -Math.PI / 2;
-      const fr = M(0x161d22, { roughness: 0.5 }), lx = cx - 3.4, lz = cz + 3.4;
+      const fr = M(0x161d22, { roughness: 0.5 }), lx = cx - 7, lz = cz + 7;
       g.add(wingA, wingB, box(bbW + 0.6, 0.6, 0.8, fr, cx + bbW / 2, by + bbH + 0.3, cz + 0.4), box(0.8, 0.6, bbW + 0.6, fr, cx - 0.4, by + bbH + 0.3, cz - bbW / 2),
         box(bbW + 0.6, 0.6, 0.8, fr, cx + bbW / 2, by - 0.3, cz + 0.4), box(0.8, 0.6, bbW + 0.6, fr, cx - 0.4, by - 0.3, cz - bbW / 2));
       // the ledge sits fully outside the screens, so nobody stands inside the building
-      const ledge = solid(new THREE.Mesh(new THREE.CylinderGeometry(3.4, 3.4, 0.5, 40), fr)); ledge.position.set(lx, by - 0.25, lz); g.add(ledge);
-      const ledgeGlow = new THREE.Mesh(new THREE.TorusGeometry(3.4, 0.07, 6, 48), new THREE.MeshBasicMaterial({ color: 0x8fe6ff })); ledgeGlow.rotation.x = Math.PI / 2; ledgeGlow.position.set(lx, by + 0.02, lz); g.add(ledgeGlow);
-      g.add(box(0.5, by, 0.5, fr, lx, by / 2, lz));
-      const cast = [[fox, 6.2, ['wave', 'Joy', 'jump']], [fluffy, 6.0, ['wave', 'Joy', 'look_around']], [explorer, 6.6, ['Approval', 'Joy']]].map(([src, h, emotes]) => {
+      const ledge = solid(new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.2, 0.6, 40), fr)); ledge.position.set(lx, by - 0.3, lz); g.add(ledge);
+      const ledgeGlow = new THREE.Mesh(new THREE.TorusGeometry(3.6, 0.08, 6, 48), new THREE.MeshBasicMaterial({ color: 0x8fe6ff })); ledgeGlow.rotation.x = Math.PI / 2; ledgeGlow.position.set(lx, by + 0.02, lz); g.add(ledgeGlow);
+      { const col = solid(new THREE.Mesh(new THREE.CylinderGeometry(0.7, 1.1, by - 0.6, 16), fr)); col.position.set(lx, (by - 0.6) / 2, lz); g.add(col); }
+      const cast = [[fox, 6.8, ['wave', 'Joy', 'jump']], [fluffy, 6.6, ['wave', 'Joy', 'look_around']], [explorer, 7.2, ['Approval', 'Joy']]].map(([src, h, emotes]) => {
         const { holder, model } = placeModel(src, h); holder.position.set(lx, by, lz); holder.rotation.y = -Math.PI / 4; holder.visible = false; g.add(holder);
         const mx = new THREE.AnimationMixer(model); mixers.push(mx);
         const clip = n => src.animations.find(c => c.name === n);
@@ -221,7 +221,7 @@ async function init() {
       const ant = solid(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.25, 10, 8), M(0xdddddd))); ant.position.y = podH + H + 8.5; g.add(ant);
       g.add(box(6, 3.8, 0.3, M(0x22343f, { roughness: 0.2 }), 2, 1.9, pd / 2 + 0.02));
       const s = signMesh({ title: b.title, sub: b.sub, accent: b.accent }, 9.5, 1.7); s.position.set(-6, 3.4, pd / 2 + 0.06); g.add(s);
-      return { group: g, colliders: [{ kind: 'rect', x: 0, z: 0, hw: pw / 2, hd: pd / 2, h: podH + H + 12 }, { kind: 'circle', x: lx, z: lz, r: 3.4, h: by + 7 }], labelY: podH + H + 18, nearY: 18, depth: pd / 2 };
+      return { group: g, colliders: [{ kind: 'rect', x: 0, z: 0, hw: pw / 2, hd: pd / 2, h: podH + H + 12 }, { kind: 'circle', x: lx, z: lz, r: 1.4, h: by + 7 }], labelY: podH + H + 18, nearY: 18, depth: pd / 2 };
     },
     showroom(b) {
       const g = new THREE.Group(), acc = hex(b.accent), round = b.variant === 'round';
@@ -668,11 +668,12 @@ async function init() {
   // benches sit on the grass: around the plaza between the avenues, and beside each avenue facing it
   const pathClear = (x, z, margin) => { for (const sg of segs) { const dx = sg.bx - sg.ax, dz = sg.bz - sg.az, l2 = dx * dx + dz * dz; let t = ((x - sg.ax) * dx + (z - sg.az) * dz) / l2; t = Math.max(0, Math.min(1, t)); if (Math.hypot(x - (sg.ax + t * dx), z - (sg.az + t * dz)) < sg.hw - 2.5 + margin) return false; } return true; };
   const benchSpots = [];
-  { let lastA = -99; for (let deg = 0; deg < 360; deg += 2) { const [x, z] = A(deg, 22.5); if (deg - lastA >= 16 && pathClear(x, z, 1.9)) { benchSpots.push({ x, z, back: Math.atan2(x - PLAZA[0], z - PLAZA[1]) }); lastA = deg; } } }
-  const exhibitSpots = EXHIBITS.map(ex => A(ex.avenue, ex.d, ex.side * 6));
+  const exhibitSpots = EXHIBITS.map(ex => { const av = AVENUES.find(v => v.angle === ex.avenue); return A(ex.avenue, ex.d, ex.side * (av.width / 2 + 3.4)); });
+  const nearExhibit = (x, z) => exhibitSpots.some(([ex, ez]) => Math.hypot(ex - x, ez - z) < 8);
+  { let lastA = -99; for (let deg = 0; deg < 360; deg += 2) { const [x, z] = A(deg, 22.5); if (deg - lastA >= 16 && pathClear(x, z, 1.9) && !nearExhibit(x, z)) { benchSpots.push({ x, z, back: Math.atan2(x - PLAZA[0], z - PLAZA[1]) }); lastA = deg; } } }
   for (const av of AVENUES) for (let d = 34; d < av.length - 8; d += 21) for (const side of [-1, 1]) {
     const off = side * (av.width / 2 + 2.1), [x, z] = A(av.angle, d, off), [fx, fz] = A(av.angle, d, 0);
-    if (!pathClear(x, z, 1.3) || exhibitSpots.some(([ex, ez]) => Math.hypot(ex - x, ez - z) < 5) || places.some(p => !p.hidden && Math.hypot(p.x - x, p.z - z) < p.ext + 3)) continue;
+    if (!pathClear(x, z, 1.3) || nearExhibit(x, z) || places.some(p => !p.hidden && Math.hypot(p.x - x, p.z - z) < p.ext + 3)) continue;
     benchSpots.push({ x, z, back: Math.atan2(x - fx, z - fz) });
   }
   { const geos = [];
@@ -870,6 +871,8 @@ async function init() {
   const { holder: avatar, model: player } = placeModel(fox, 1.35);
   avatar.position.set(0, 0, GATE_Z - 4); avatar.rotation.y = Math.PI; scene.add(avatar);
   const footY = player.position.y;
+  // the fox tilts on a pivot at its middle: nose down when it dives, up when it climbs
+  const tilt = new THREE.Group(); tilt.position.y = 0.6; avatar.add(tilt); tilt.add(player); const baseY = footY - 0.6; player.position.y = baseY; let tiltX = 0;
   const mixer = new THREE.AnimationMixer(player); mixers.push(mixer);
   const acts = {}; for (const n of ['idle', 'walk', 'run', 'fly', 'fly_fast', 'ascend', 'descend']) acts[n] = mixer.clipAction(fox.animations.find(c => c.name === n) || fox.animations[0]);
   let pose = 'idle'; acts.idle.play();
@@ -1093,20 +1096,23 @@ async function init() {
         avatar.position.addScaledVector(move, speed * dt);
         const yawWant = Math.atan2(move.x, move.z); let d = yawWant - avatar.rotation.y; d = Math.atan2(Math.sin(d), Math.cos(d)); avatar.rotation.y += d * Math.min(1, dt * 10);
       }
-      let vy = 0;
+      let vy = 0, vRate = 0;
       if (flying) {
         if (held(UP) || padUp) { vy += 1; landing = false; }
         if (held(DOWN) || padDown || landing) vy -= 1;
         // the fox heads where the camera looks: camera low (looking up) climbs, camera high (looking down) dives
         const steer = Math.abs(iz) > 0.1 && !landing ? THREE.MathUtils.clamp((0.36 - fol.pitch) / 0.3, -1.4, 1) * Math.sign(iz) : 0;
-        avatar.position.y = THREE.MathUtils.clamp(avatar.position.y + (vy * (landing ? 11 : 8) + steer * curSpeed * 0.75) * dt, 0, FLY_MAX);
+        vRate = vy * (landing ? 11 : 8) + steer * curSpeed * 0.75;
+        avatar.position.y = THREE.MathUtils.clamp(avatar.position.y + vRate * dt, 0, FLY_MAX);
         if (avatar.position.y <= 0.001 && (vy < 0 || steer < 0)) setFlying(false);
       }
       collide(avatar.position);
       const rr = Math.hypot(avatar.position.x - PLAZA[0], avatar.position.z - PLAZA[1]); if (rr > PARK_R) { avatar.position.x = PLAZA[0] + (avatar.position.x - PLAZA[0]) * PARK_R / rr; avatar.position.z = PLAZA[1] + (avatar.position.z - PLAZA[1]) * PARK_R / rr; }
       if (flying) setPose(vy > 0 && amount < 0.05 ? 'ascend' : vy < 0 && amount < 0.05 ? 'descend' : fast && amount > 0.05 ? 'fly_fast' : 'fly');
       else setPose(amount > 0.05 ? (fast ? 'run' : 'walk') : 'idle');
-      player.position.y = footY + (flying ? Math.sin(t * 2.2) * 0.08 : 0);
+      player.position.y = baseY + (flying ? Math.sin(t * 2.2) * 0.08 : 0);
+      const tiltWant = !flying ? 0 : amount > 0.05 ? Math.atan2(-vRate, Math.max(curSpeed, 3)) : (fol.pitch - 0.36) * 0.6 + (vRate < 0 ? 0.25 : vRate > 0 ? -0.2 : 0);
+      tiltX += (THREE.MathUtils.clamp(tiltWant, -0.85, 0.85) - tiltX) * Math.min(1, dt * 6); tilt.rotation.x = tiltX;
 
       let found = null, best = 1e9;
       if (avatar.position.y < 6) for (const p of places) { if (p.hidden) continue; const d = Math.hypot(avatar.position.x - p.front.x, avatar.position.z - p.front.z); const inside = Math.hypot(avatar.position.x - p.x, avatar.position.z - p.z) < p.ext + 3; if ((d < 8 || inside) && d < best) { best = d; found = p; } }
@@ -1120,7 +1126,7 @@ async function init() {
       if (last < 1) want.lerpVectors(look, want, Math.max(0.25, last - 0.05));
     } else {
       idleT += dt; if (idleT > 6 && !reduced) ov.yaw += dt * 0.03;
-      setPose('idle'); player.position.y = footY;
+      setPose('idle'); player.position.y = baseY; tiltX = 0; tilt.rotation.x = 0;
       look.copy(ov.target);
       want.set(look.x + Math.sin(ov.yaw) * Math.cos(ov.pitch) * ov.dist, look.y + Math.sin(ov.pitch) * ov.dist, look.z + Math.cos(ov.yaw) * Math.cos(ov.pitch) * ov.dist);
     }
