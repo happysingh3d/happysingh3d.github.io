@@ -1,8 +1,8 @@
 // Happy Singh Park — content catalogue.
 // Every building holds one body of work. To add a piece: add an item to a building, or copy a
 // building entry (a product showroom, a game lot or a tool shop) and give it a free spot.
-// Positions use P(angle, radius): angle in degrees clockwise from north, radius in metres from
-// the fountain plaza. Buildings turn to face the plaza automatically.
+// Positions use A(avenue angle, distance, side) along the six district avenues (or P(angle, radius) from the
+// fountain plaza). Buildings at the end of an avenue face the plaza; buildings along it face the avenue.
 
 export const SITE = {
   name: 'Happy Singh',
@@ -27,6 +27,19 @@ export const SITES = {
 
 export const PLAZA = [0, 10];
 const P = (a, r) => { const t = a * Math.PI / 180; return [+(Math.sin(t) * r).toFixed(2), +(PLAZA[1] - Math.cos(t) * r).toFixed(2)]; };
+// A(avenue angle, distance, side): a spot along a district avenue; side > 0 is the right-hand side walking outward.
+const A = (a, d, s = 0) => { const t = a * Math.PI / 180; return [+(Math.sin(t) * d + Math.cos(t) * s).toFixed(2), +(PLAZA[1] - Math.cos(t) * d + Math.sin(t) * s).toFixed(2)]; };
+export { A };
+// The park is a fountain plaza with six district avenues. Each avenue has its own exhibits along the way.
+export const AVENUES = [
+  { id: 'north', angle: 0, length: 128, width: 7 },
+  { id: 'east', angle: 90, length: 117, width: 7 },
+  { id: 'market', angle: 140, length: 98, width: 10 },
+  { id: 'south', angle: 180, length: 156, width: 7 },
+  { id: 'games', angle: 255, length: 116, width: 8 },
+  { id: 'frontier', angle: 315, length: 92, width: 6 },
+];
+export const GATE = { d: 140 }, SPAWN = { d: 150 };
 const ccv = id => `https://www-ccv.adobe.io/v1/player/ccv/${id}/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View`;
 const drive = id => `https://drive.google.com/file/d/${id}/preview`;
 const img = name => `assets/web/${name}.webp`;
@@ -45,7 +58,7 @@ const TOOLS = [
 ];
 const SHOP_ACCENTS = ['#e07a2d', '#3f8f5a', '#3d8fb8', '#d4577a', '#8a6fd1', '#c9971f', '#2f9c95', '#c9724e', '#5b7bd5'];
 const SHOP_BODIES = ['#f7dcc4', '#d3ead9', '#d4e9f3', '#f5d3de', '#e0d9f4', '#f5e7bd', '#cdece9', '#f2d6ca', '#d9e0f7'];
-const SHOP_ANGLES = [108, 115, 122, 129, 143, 150, 157, 164, 171];
+const SHOP_SPOTS = [[30, 9], [42, -9], [42, 9], [54, -9], [54, 9], [66, -9], [66, 9], [78, -9], [78, 9]]; // [distance, side] on the market street
 
 const GAME_CONTROLS = {
   foxfire: 'WASD to run, drag or Q/E to turn the camera, Space or Shift to dash. Stand on a pad to build a lantern.',
@@ -56,7 +69,7 @@ const GAME_CONTROLS = {
 
 export const BUILDINGS = [
   {
-    id: 'animation', type: 'tower', at: P(0, 104), w: 20, d: 20, h: 54,
+    id: 'animation', type: 'tower', at: A(0, 140), w: 20, d: 20, h: 54,
     title: 'Animation tower', sub: 'Rigs, character motion, effects', district: '3D and animation',
     accent: '#3d8fb8', tagline: 'Maya rigs, character animation and real-time effects.', site: SITES.portfolio3d,
     items: [
@@ -75,7 +88,7 @@ export const BUILDINGS = [
     ],
   },
   {
-    id: 'aster', type: 'showroom', variant: 'tower', at: P(27, 102), w: 11, d: 11, h: 17, overview: false,
+    id: 'aster', type: 'showroom', variant: 'tower', at: A(0, 86, -15), face: A(0, 86), w: 11, d: 11, h: 17, overview: false,
     model: 'assets/products/aster-speaker.glb', productH: 6.2,
     title: 'Aster speaker', sub: 'Walnut bookshelf speaker', district: 'Product studios', accent: '#d9944f',
     tagline: 'A bookshelf speaker concept rendered in Blender.',
@@ -85,7 +98,7 @@ export const BUILDINGS = [
       meta: 'Concept study, Blender and Cycles, AI-assisted scripting' }],
   },
   {
-    id: 'forma', type: 'showroom', variant: 'cube', at: P(43, 102), w: 16, d: 14, h: 11, overview: false,
+    id: 'forma', type: 'showroom', variant: 'cube', at: A(0, 98, 16), face: A(0, 98), w: 16, d: 14, h: 11, overview: false,
     model: 'assets/products/forma-chair.glb', productH: 5.2,
     title: 'Forma chair', sub: 'Leather lounge chair', district: 'Product studios', accent: '#c9724e',
     tagline: 'A lounge chair concept rendered in Blender.',
@@ -95,7 +108,7 @@ export const BUILDINGS = [
       meta: 'Concept study, Blender and Cycles, AI-assisted scripting' }],
   },
   {
-    id: 'arc', type: 'showroom', variant: 'round', at: P(59, 102), r: 7.5, h: 13, overview: false,
+    id: 'arc', type: 'showroom', variant: 'round', at: A(0, 112, -17), face: A(0, 112), r: 7.5, h: 13, overview: false,
     model: 'assets/products/arc-lamp.glb', productH: 6.8,
     title: 'Arc lamp', sub: 'Brass desk lamp', district: 'Product studios', accent: '#5b7bd5',
     tagline: 'A desk lamp concept rendered in Blender.',
@@ -105,7 +118,19 @@ export const BUILDINGS = [
       meta: 'Concept study, Blender and Cycles, AI-assisted scripting' }],
   },
   {
-    id: 'video', type: 'video', at: P(84, 98), w: 22, d: 16, h: 17, opens: 'site', site: SITES.video,
+    id: 'creatures', type: 'gallery', hidden: true, at: A(0, 50), title: 'Hive Adapt creatures', sub: 'Game-ready creature models', district: '3D and animation', accent: '#9a6bd8',
+    tagline: 'The swarm from Hive Adapt. Spin them in 3D.',
+    items: [
+      { id: 'crawler', base: [0.15, 0.11, 0.08], emis: [4.5, 1.2, 0.2], title: 'Crawler', kind: 'model', model: 'games/hive-adapt/assets/models/SK_Crawler.glb', description: 'The basic swarm bug: fast, low and many. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+      { id: 'spitter', base: [0.25, 0.3, 0.16], emis: [2.2, 6, 0.45], title: 'Spitter', kind: 'model', model: 'games/hive-adapt/assets/models/SK_Spitter.glb', description: 'Hangs back and lobs acid. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+      { id: 'flyer', base: [0.1, 0.13, 0.09], emis: [1.6, 4.2, 0.6], title: 'Flyer', kind: 'model', model: 'games/hive-adapt/assets/models/SK_Flyer.glb', description: 'Dives at defenders from above. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+      { id: 'skyqueen', base: [0.09, 0.07, 0.13], emis: [0.9, 3.8, 6.5], title: 'Sky Queen', kind: 'model', model: 'games/hive-adapt/assets/models/SK_SkyQueen.glb', description: 'An airborne queen that arrives on a fifth wave. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+      { id: 'hiveboss', base: [0.13, 0.07, 0.06], emis: [6, 1.1, 0.15], title: 'Hive Boss', kind: 'model', model: 'games/hive-adapt/assets/models/SK_HiveBoss.glb', description: 'The heavy boss of the swarm. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+      { id: 'matriarch', base: [0.16, 0.16, 0.17], emis: [6.5, 4.2, 1.6], title: 'Armored Matriarch', kind: 'model', model: 'games/hive-adapt/assets/models/SK_ArmoredMatriarch.glb', description: 'A plated queen built to soak damage. Modelled for Hive Adapt.', meta: 'Game-ready creature, GLB' },
+    ],
+  },
+  {
+    id: 'video', type: 'video', at: A(90, 125), w: 22, d: 16, h: 17, opens: 'site', site: SITES.video,
     title: 'Video studio', sub: 'Opens the video editing website', district: 'Video editing', accent: '#d4577a',
     tagline: 'Television edits, motion graphics and short film.',
     items: [
@@ -118,20 +143,20 @@ export const BUILDINGS = [
     ],
   },
   {
-    id: 'toolkit', type: 'workshop', at: P(136, 124), w: 22, d: 14, h: 9, opens: 'site', site: SITES.toolkit,
+    id: 'toolkit', type: 'workshop', at: A(140, 105), w: 22, d: 14, h: 9, opens: 'site', site: SITES.toolkit,
     title: '3D Artist Toolkit', sub: 'Free web app: opens the toolkit', district: 'Tool market', accent: '#2f9c95',
     tagline: 'Free tools that run in your browser.',
     items: [{ id: 'toolkit', title: '3D Artist Toolkit', kind: 'link', cover: img('toolkit'), href: SITES.toolkit.url, hrefLabel: 'Open the toolkit',
       description: 'Free and runs in your browser: normal-map generator, material preview, Maya and Blender script generators, texture packer.', meta: 'Free, web' }],
   },
   ...TOOLS.map(([id, title, sub, slug, icon], i) => ({
-    id: `shop-${id}`, type: 'shop', icon, at: P(SHOP_ANGLES[i], 86), w: 6, d: 5, h: 4.6, overview: false,
+    id: `shop-${id}`, type: 'shop', icon, at: A(140, SHOP_SPOTS[i][0], SHOP_SPOTS[i][1]), face: A(140, SHOP_SPOTS[i][0]), w: 6, d: 5, h: 4.6, overview: false,
     title, sub: `${sub}, Blender`, district: 'Tool market', accent: SHOP_ACCENTS[i], body: SHOP_BODIES[i],
     tagline: 'A Blender add-on on Gumroad.',
     items: [{ id, title, kind: 'link', href: gum(slug), hrefLabel: 'View on Gumroad', description: `${sub}. A Blender add-on sold on Gumroad.`, meta: 'Blender add-on' }],
   })),
   {
-    id: 'shop-happy3d', type: 'shop', icon: 'radial', at: P(101, 86), w: 6, d: 5, h: 4.6, overview: false,
+    id: 'shop-happy3d', type: 'shop', icon: 'radial', at: A(140, 30, -9), face: A(140, 30), w: 6, d: 5, h: 4.6, overview: false,
     title: 'Happy3D', sub: 'Maya-style controls, Blender', district: 'Tool market', accent: '#e8a33d', body: '#fbe6c4',
     tagline: 'Free and open source. In development.',
     items: [{ id: 'happy3d', title: 'Happy3D', kind: 'note', badge: 'In development',
@@ -139,7 +164,7 @@ export const BUILDINGS = [
       meta: 'Blender add-on, Python, GPL · coming soon' }],
   },
   {
-    id: 'about', type: 'kiosk', at: [12, 122], face: [0, 122], w: 5, d: 3.6, h: 3.6,
+    id: 'about', type: 'kiosk', at: A(180, 118, 10), face: A(180, 118), w: 5, d: 3.6, h: 3.6,
     title: 'About Happy', sub: 'Who made this park', district: 'Welcome', accent: '#3f8f5a',
     tagline: 'Who built this park, and how to reach him.',
     items: [{ id: 'about', title: 'Hello', kind: 'about', photo: img('happy-portrait'), body: [
@@ -150,7 +175,7 @@ export const BUILDINGS = [
   },
   // Game district: the real Project 0 lot builds. Click one to play full screen.
   {
-    id: 'game-foxfire', type: 'lot', at: P(196, 104), lot: [24, 24], boxH: 22, model: 'assets/lots/ink-fox-shrine.glb', fit: [20, 20, 20],
+    id: 'game-foxfire', type: 'lot', at: A(255, 44, -21), face: A(255, 44), lot: [24, 24], boxH: 22, model: 'assets/lots/ink-fox-shrine.glb', fit: [20, 20, 20],
     anim: 'stand_idle', toon: true, opens: 'game', game: 'foxfire',
     title: 'Foxfire Watch', sub: 'Ink Fox Shrine: play the game', district: 'Games', accent: '#f0a030', lotLabel: 'Project 0 lot 343',
     tagline: 'Defend the shrine as the Ink Fox.', controls: GAME_CONTROLS.foxfire,
@@ -158,7 +183,7 @@ export const BUILDINGS = [
       description: 'Defend the shrine as the Ink Fox: dash between attacks and build lantern turrets. Every fifth wave the hive adapts to what hurt it most.', meta: 'Three.js, keyboard' }],
   },
   {
-    id: 'game-mirror', type: 'lot', at: P(218, 104), lot: [26, 18], boxH: 12, model: 'assets/lots/mirror-race.glb', fit: [22, 14, 12],
+    id: 'game-mirror', type: 'lot', at: A(255, 48, 18), face: A(255, 48), lot: [26, 18], boxH: 12, model: 'assets/lots/mirror-race.glb', fit: [22, 14, 12],
     opens: 'game', game: 'mirror-race',
     title: 'Mirror Race', sub: 'Racing pavilion: play the game', district: 'Games', accent: '#2fd3e8', lotLabel: 'Project 0 lot 3076',
     tagline: 'A neon time trial with reversed steering.', controls: GAME_CONTROLS['mirror-race'],
@@ -166,7 +191,7 @@ export const BUILDINGS = [
       description: 'A two-lap neon time trial against seven racers, with reversed steering. Start on a practice difficulty.', meta: 'Three.js, keyboard' }],
   },
   {
-    id: 'game-hive', type: 'lot', at: P(243, 110), lot: [34, 24], boxH: 26, model: 'assets/lots/hive-queen.glb', fit: [30, 21, 26],
+    id: 'game-hive', type: 'lot', at: A(255, 86, -23), face: A(255, 86), lot: [34, 24], boxH: 26, model: 'assets/lots/hive-queen.glb', fit: [30, 21, 26],
     anim: '*', game: 'hive-adapt', href: 'https://deadhunk.itch.io/hive-adapt',
     title: 'Hive Adapt', sub: 'The Hive Queen: play here or on itch.io', district: 'Games', accent: '#f5c430', lotLabel: 'Project 0 lot 297',
     tagline: 'Hold the Core against a swarm that learns how you fight.', controls: GAME_CONTROLS['hive-adapt'],
@@ -176,7 +201,7 @@ export const BUILDINGS = [
       meta: 'Three.js (Project 0 version) · full game on itch.io' }],
   },
   {
-    id: 'game-neon', type: 'lot', at: P(268, 104), lot: [26, 18], boxH: 12, model: 'assets/lots/haven-station.glb', fit: [22, 14, 11],
+    id: 'game-neon', type: 'lot', at: A(255, 86, 18), face: A(255, 86), lot: [26, 18], boxH: 12, model: 'assets/lots/haven-station.glb', fit: [22, 14, 11],
     opens: 'game', game: 'neon-rescue',
     title: 'Neon Rescue', sub: 'Haven Station: play the game', district: 'Games', accent: '#ff5fa8', lotLabel: 'Project 0 build',
     tagline: 'Find your friends in District 07.', controls: GAME_CONTROLS['neon-rescue'],
@@ -184,7 +209,7 @@ export const BUILDINGS = [
       description: 'Find your friends in District 07 and bring everyone home before your energy runs out.', meta: 'Three.js, keyboard' }],
   },
   {
-    id: 'characters', type: 'garden', at: P(232, 66), r: 13,
+    id: 'characters', type: 'garden', at: A(0, 52, 25), face: A(0, 52), r: 13,
     title: 'Character garden', sub: 'Meet the foxes and the explorer', district: 'Characters', accent: '#8a6fd1',
     tagline: 'Characters built for Project 0. Spin them and try their moves.',
     items: [
@@ -197,7 +222,7 @@ export const BUILDINGS = [
     ],
   },
   {
-    id: 'design', type: 'design', at: P(300, 102), w: 22, d: 16, h: 19, opens: 'site', site: SITES.graphic,
+    id: 'design', type: 'design', at: A(90, 86, -27), face: A(90, 86), w: 22, d: 16, h: 19, opens: 'site', site: SITES.graphic,
     title: 'Design studio', sub: 'Opens the graphic design website', district: 'Graphic design', accent: '#0d99ff',
     tagline: 'Brand identity, packaging and typography.',
     items: [
@@ -210,7 +235,7 @@ export const BUILDINGS = [
     ],
   },
   {
-    id: 'frontier', type: 'outpost', at: P(324, 104), w: 14, d: 10, h: 6.5,
+    id: 'frontier', type: 'outpost', at: A(315, 100), w: 14, d: 10, h: 6.5,
     title: 'Project Frontier', sub: 'Survival game in Unity, in development', district: 'Games in development', accent: '#d98a3a',
     tagline: 'A first-person survival game. The war ended; the instructions didn’t.',
     items: [{ id: 'frontier', title: 'Project Frontier', kind: 'images', cover: img('frontier-river'),
@@ -219,20 +244,58 @@ export const BUILDINGS = [
       meta: 'Unity (URP), C#, procedural terrain · in development' }],
   },
   {
-    id: 'itch', type: 'marquee', at: P(284, 96), w: 10, d: 3, h: 9, opens: 'link', href: 'https://deadhunk.itch.io/',
+    id: 'itch', type: 'marquee', at: A(255, 120), w: 10, d: 3, h: 9, opens: 'link', href: 'https://deadhunk.itch.io/',
     title: '18 games on itch.io', sub: 'Browser games: opens itch.io', district: 'Games', accent: '#fa5c5c',
     tagline: 'Eighteen browser games, from bullet-heaven to streamer party games.',
     games: ['Hive Adapt', 'Shardfall', 'Block City Mayhem', 'Marble Mayhem', 'Chat Court', 'Chat Royale', 'Crowd Defusal', 'Dungeon Panic', 'Titan Rumble', 'Aetherforge', 'Rhythm Surge', 'Shadow Blade', 'Cosmic Forge', 'Abyss Deck', 'Void Drifter', 'Neon Grid', 'Deep Core', 'Chrono Survivors'],
     items: [{ id: 'itch', title: 'DeadHunk on itch.io', kind: 'link', href: 'https://deadhunk.itch.io/', hrefLabel: 'See all 18 games',
       description: 'Eighteen games that play in the browser: Hive Adapt, Shardfall, Block City Mayhem, Marble Mayhem, Chrono Survivors, Rhythm Surge, Shadow Blade, Void Drifter and more, including party games made for streamers and their chat.', meta: 'Browser games' }],
   },
-  { id: 'plot-2', type: 'plot', at: P(344, 104), w: 14, d: 12, overview: false, title: 'Coming soon', sub: 'New work moves in here', district: 'Empty plot', accent: '#e07a2d', items: [] },
+  { id: 'plot-2', type: 'plot', at: A(315, 64, -18), face: A(315, 64), w: 14, d: 12, overview: false, title: 'Coming soon', sub: 'New work moves in here', district: 'Empty plot', accent: '#e07a2d', items: [] },
 ];
 
 // Extra name tags shown from above for groups of buildings.
 export const AREAS = [
-  { title: 'Product studios', sub: 'Speaker, chair and lamp, turning in glass', at: P(43, 102), y: 24, accent: '#c9724e', focus: 'forma' },
-  { title: 'Tool market', sub: 'Blender add-ons, one shop each', at: P(140, 88), y: 10, accent: '#2f9c95', focus: 'shop-gameready' },
+  { title: '3D street', sub: 'Creatures, animation, products, characters', at: A(0, 66), y: 12, accent: '#3d8fb8', focus: 'characters' },
+  { title: 'Studio walk', sub: 'Video and graphic design', at: A(90, 62), y: 12, accent: '#d4577a', focus: 'design' },
+  { title: 'Tool market', sub: 'Blender add-ons, one shop each', at: A(140, 56), y: 10, accent: '#2f9c95', focus: 'shop-gameready' },
+  { title: 'Games street', sub: 'Project 0 builds and more games', at: A(255, 68), y: 12, accent: '#f0a030', focus: 'game-foxfire' },
+  { title: 'Frontier trail', sub: 'Games in development', at: A(315, 58), y: 10, accent: '#d98a3a', focus: 'frontier' },
+]
+
+
+// Exhibits stand along the avenues. Click one to open its piece. side: -1 left, +1 right (walking outward).
+const STANDEES = [
+  ['Shardfall', 'Break its horns and tail', 'shardfall', '#7b5cff'],
+  ['Block City Mayhem', 'Five story levels of chaos', 'block-city-mayhem', '#ff7a3c'],
+  ['Chrono Survivors', 'Outlast the swarm', 'chrono-survivors-zero-protocol', '#2fd3e8'],
+  ['Marble Mayhem', 'Tiny marbles, massive rivalries', 'marble-mayhem', '#3fbf6a'],
+  ['Rhythm Surge', 'Find your flow', 'rhythm-surge', '#ff4fa3'],
+  ['Shadow Blade', 'One blade, a thousand chances', 'shadow-blade', '#e8c33d'],
+];
+export const EXHIBITS = [
+  { avenue: 0, d: 26, side: -1, kind: 'poster', building: 'animation', item: 'character-rig' },
+  { avenue: 0, d: 26, side: 1, kind: 'poster', building: 'animation', item: 'animation-04' },
+  { avenue: 0, d: 38, side: -1, kind: 'model', building: 'creatures', item: 'crawler', h: 1.6 },
+  { avenue: 0, d: 38, side: 1, kind: 'model', building: 'creatures', item: 'spitter', h: 1.8 },
+  { avenue: 0, d: 50, side: -1, kind: 'poster', building: 'animation', item: 'animation-01' },
+  { avenue: 0, d: 50, side: 1, kind: 'model', building: 'creatures', item: 'flyer', h: 1.8 },
+  { avenue: 0, d: 62, side: -1, kind: 'model', building: 'creatures', item: 'skyqueen', h: 2.6 },
+  { avenue: 0, d: 62, side: 1, kind: 'poster', building: 'animation', item: 'animation-03' },
+  { avenue: 0, d: 74, side: -1, kind: 'poster', building: 'animation', item: 'particles' },
+  { avenue: 0, d: 74, side: 1, kind: 'model', building: 'creatures', item: 'hiveboss', h: 2.8 },
+  { avenue: 0, d: 82, side: 1, kind: 'model', building: 'creatures', item: 'matriarch', h: 2.6 },
+  { avenue: 0, d: 120, side: 1, kind: 'poster', building: 'animation', item: 'pipeline' },
+  { avenue: 90, d: 26, side: 1, kind: 'screen', building: 'video', item: 'judge-edit' },
+  { avenue: 90, d: 40, side: 1, kind: 'screen', building: 'video', item: 'motion' },
+  { avenue: 90, d: 54, side: 1, kind: 'screen', building: 'video', item: 'short-film' },
+  { avenue: 90, d: 26, side: -1, kind: 'easel', building: 'design', item: 'brand' },
+  { avenue: 90, d: 40, side: -1, kind: 'easel', building: 'design', item: 'honey' },
+  { avenue: 90, d: 54, side: -1, kind: 'easel', building: 'design', item: 'typography' },
+  { avenue: 315, d: 30, side: -1, kind: 'poster', building: 'frontier', item: 'frontier', image: 3 },
+  { avenue: 315, d: 30, side: 1, kind: 'poster', building: 'frontier', item: 'frontier', image: 0 },
+  ...[[22, -1], [22, 1], [64, -1], [64, 1], [108, -1], [108, 1]].map(([d, side], i) => ({ avenue: 255, d, side, kind: 'standee',
+    title: STANDEES[i][0], sub: STANDEES[i][1], href: `https://deadhunk.itch.io/${STANDEES[i][2]}`, color: STANDEES[i][3] })),
 ];
 
 // Shortcut chips along the bottom of the park.
@@ -250,7 +313,7 @@ export const CHIPS = [
 
 // Sections for the plain list view (classic.html, kept as a no-3D fallback).
 export const GROUPS = [
-  { title: '3D and animation', tagline: 'Rigs, character animation, real-time effects and product renders.', ids: ['animation', 'aster', 'forma', 'arc'] },
+  { title: '3D and animation', tagline: 'Rigs, character animation, real-time effects and product renders.', ids: ['animation', 'creatures', 'aster', 'forma', 'arc'] },
   { title: 'Games', tagline: 'Games built for Project 0, plus Hive Adapt on itch.io.', ids: ['game-foxfire', 'game-mirror', 'game-hive', 'game-neon', 'frontier', 'itch'] },
   { title: 'Characters', tagline: 'Characters built for Project 0.', ids: ['characters'] },
   { title: 'Tools for artists', tagline: 'A free web toolkit and Blender add-ons on Gumroad.', ids: ['toolkit', 'shop-happy3d', ...TOOLS.map(t => `shop-${t[0]}`)] },

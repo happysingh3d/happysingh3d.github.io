@@ -29,6 +29,7 @@
     <nav class="hud-links" aria-label="Site">
       <button id="fly-btn" class="hud-btn explore-only" aria-pressed="false">Fly</button>
       <button id="mode-top" class="hud-btn explore-only">Back to overview</button>
+      <button id="time-btn" class="hud-btn" aria-label="Switch to night">☾ Night</button>
       <button id="help-btn" class="hud-btn" aria-expanded="false" aria-controls="help">How to move</button>
       <a id="classic-link" class="hud-btn" href="https://happysingh3d.com/classic.html" data-classic>Classic view</a>
     </nav>
@@ -51,7 +52,9 @@
       <li><b>Look around</b> by dragging. Scroll or pinch to zoom.</li>
       <li><b>Open a building</b> by clicking it or its name tag. Games and websites open full screen; move the mouse to the top edge to bring back the "Back to the park" bar.</li>
       <li><b>Walk</b> as the fox with W A S D or the arrow keys. Hold Shift to run.</li>
-      <li><b>Fly</b> with the Fly button or F. Space or E goes up, Shift or C goes down. Hold a direction to speed up. Land to walk again.</li>
+      <li><b>Fly</b> with the Fly button or F. Space goes up, Ctrl (or C) goes down, Shift flies faster. While flying, the fox heads where the camera looks: look down to dive, up to climb. Land to walk again.</li>
+      <li><b>Look around</b> while exploring by dragging with either mouse button.</li>
+      <li><b>Day and night</b> change every few minutes. The Night button switches straight away.</li>
       <li><b>On a phone</b>, use the stick to walk and the arrows to fly up and down.</li>
     </ul>
     <button class="text-btn" id="help-close">Got it</button>
@@ -66,7 +69,7 @@
   <div id="stick" class="stick explore-only" aria-hidden="true"><span class="stick-knob"></span></div>
   <div id="fly-pad" class="fly-pad" hidden>
     <button id="fly-up" aria-label="Fly up">▲<span class="key" aria-hidden="true">Space</span></button>
-    <button id="fly-down" aria-label="Fly down">▼<span class="key" aria-hidden="true">Shift</span></button>
+    <button id="fly-down" aria-label="Fly down">▼<span class="key" aria-hidden="true">Ctrl</span></button>
   </div>
   <p id="toast" class="toast" role="status" hidden></p>
 
