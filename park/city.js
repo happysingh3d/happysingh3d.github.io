@@ -685,10 +685,10 @@ async function init() {
 
   // ---------- welcome gate ----------
   { const gate = new THREE.Group(); gate.position.set(0, 0, GATE_Z);
-    for (const sx of [-1, 1]) { gate.add(box(2.6, 12, 2.6, M(0xebe6dc), sx * 12, 6, 0)); colliders.push({ kind: 'rect', x: sx * 12, z: GATE_Z, hw: 1.4, hd: 1.4, h: 12, cos: 1, sin: 0 }); }
-    gate.add(box(27, 3, 1.9, M(0x2f5f4f), 0, 12.6, 0));
+    for (const sx of [-1, 1]) { gate.add(box(2.6, 9, 2.6, M(0xebe6dc), sx * 12, 4.5, 0)); colliders.push({ kind: 'rect', x: sx * 12, z: GATE_Z, hw: 1.4, hd: 1.4, h: 11, cos: 1, sin: 0 }); }
+    gate.add(box(27, 3, 1.9, M(0x2f5f4f), 0, 9.6, 0));
     const opts = { title: 'Happy Singh', sub: '3D artist and animator', bg: '#2f5f4f', fg: '#ffffff', subFg: '#cfe6dc', accent: '#e07a2d', align: 'center' };
-    const f = signMesh(opts, 23, 2.6); f.position.set(0, 12.6, 0.97); const bk = signMesh(opts, 23, 2.6); bk.position.set(0, 12.6, -0.97); bk.rotation.y = Math.PI;
+    const f = signMesh(opts, 23, 2.6); f.position.set(0, 9.6, 0.97); const bk = signMesh(opts, 23, 2.6); bk.position.set(0, 9.6, -0.97); bk.rotation.y = Math.PI;
     gate.add(f, bk); scene.add(gate); keepCircle(0, GATE_Z, 15); }
 
   // ---------- exhibits along the avenues: creatures on plinths, animation posters, video screens, design easels, game standees ----------
@@ -868,7 +868,7 @@ async function init() {
 
   // ---------- the player: Ink Fox ----------
   const { holder: avatar, model: player } = placeModel(fox, 1.35);
-  avatar.position.set(0, 0, SPAWN_Z); avatar.rotation.y = Math.PI; scene.add(avatar);
+  avatar.position.set(0, 0, GATE_Z - 4); avatar.rotation.y = Math.PI; scene.add(avatar);
   const footY = player.position.y;
   const mixer = new THREE.AnimationMixer(player); mixers.push(mixer);
   const acts = {}; for (const n of ['idle', 'walk', 'run', 'fly', 'fly_fast', 'ascend', 'descend']) acts[n] = mixer.clipAction(fox.animations.find(c => c.name === n) || fox.animations[0]);
@@ -878,7 +878,7 @@ async function init() {
   // ---------- modes, camera, input ----------
   let mode = 'overview', flying = false, landing = false, transT = 0, idleT = 0, shift = 0, flyHold = 0;
   const ov = { target: new THREE.Vector3(PLAZA[0], 0, PLAZA[1] - 4), yaw: 0, pitch: 0.66, dist: 0, base: 0 };
-  const fol = { yaw: 0, pitch: 0.34, dist: innerWidth < 700 ? 12 : 10 };
+  const fol = { yaw: 0, pitch: 0.34, dist: innerWidth < 700 ? 12 : 10 }; let arrived = false;
   const portrait = () => camera.aspect < 0.8;
   const overviewDist = () => {
     const v = THREE.MathUtils.degToRad(camera.fov / 2), hh = Math.atan(Math.tan(v) * camera.aspect);
@@ -892,7 +892,7 @@ async function init() {
   shortLabels(); addEventListener('resize', shortLabels);
   function setMode(m) {
     mode = m; body.dataset.mode = m; transT = 1.6; idleT = 0;
-    if (m === 'explore') { fol.yaw = avatar.rotation.y + Math.PI; fol.pitch = 0.34; }
+    if (m === 'explore') { fol.yaw = avatar.rotation.y + Math.PI; fol.pitch = 0.34; if (!arrived) { arrived = true; avatar.position.set(0, 0, GATE_Z - 4); avatar.rotation.y = Math.PI; fol.yaw = 0; fol.pitch = 0.08; fol.dist = 20; } }
     else { setFlying(false); landing = false; keys.clear(); stick = { x: 0, y: 0 }; moveTarget = null; }
     updatePrompt(null);
   }
@@ -1112,7 +1112,7 @@ async function init() {
       if (avatar.position.y < 6) for (const p of places) { if (p.hidden) continue; const d = Math.hypot(avatar.position.x - p.front.x, avatar.position.z - p.front.z); const inside = Math.hypot(avatar.position.x - p.x, avatar.position.z - p.z) < p.ext + 3; if ((d < 8 || inside) && d < best) { best = d; found = p; } }
       updatePrompt(found);
 
-      look.set(avatar.position.x, avatar.position.y + 1.2, avatar.position.z);
+      look.set(avatar.position.x, avatar.position.y + 1.2 + Math.min(2.2, fol.dist * 0.08), avatar.position.z);
       want.set(look.x + Math.sin(fol.yaw) * Math.cos(fol.pitch) * fol.dist, look.y + Math.sin(fol.pitch) * fol.dist, look.z + Math.cos(fol.yaw) * Math.cos(fol.pitch) * fol.dist);
       want.y = Math.max(want.y, 0.8);
       const steps = Math.ceil(fol.dist); let last = 1;
@@ -1137,5 +1137,5 @@ async function init() {
     updateTags();
   });
 
-  window.__city = { renderer, scene, camera, avatar, setMode, setFlying, focus: (id, snap) => { focus(byId(id)); if (snap) { transT = 0; camera.position.set(ov.target.x + Math.sin(ov.yaw) * Math.cos(ov.pitch) * ov.dist, ov.target.y + Math.sin(ov.pitch) * ov.dist, ov.target.z + Math.cos(ov.yaw) * Math.cos(ov.pitch) * ov.dist); camLook.copy(ov.target); } }, ov, camLook, places: places.map(p => p.b.id), state: () => ({ mode, flying, y: avatar.position.y }) };
+  window.__city = { renderer, scene, camera, avatar, setMode, setFlying, focus: (id, snap) => { focus(byId(id)); if (snap) { transT = 0; camera.position.set(ov.target.x + Math.sin(ov.yaw) * Math.cos(ov.pitch) * ov.dist, ov.target.y + Math.sin(ov.pitch) * ov.dist, ov.target.z + Math.cos(ov.yaw) * Math.cos(ov.pitch) * ov.dist); camLook.copy(ov.target); } }, ov, fol, camLook, places: places.map(p => p.b.id), state: () => ({ mode, flying, y: avatar.position.y }) };
 }
