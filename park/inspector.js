@@ -177,7 +177,8 @@ function aboutStage(stage, item) {
   stage.append(el('div', { class: 'about' },
     item.photo ? el('img', { class: 'about-photo', src: item.photo, alt: 'Happy Singh', width: 160, height: 160 }) : null,
     item.body.map(p => el('p', {}, p)),
-    el('p', {}, el('a', { class: 'btn', href: `mailto:${SITE.email}?subject=Project%20enquiry` }, 'Email me')),
+    el('p', { class: 'about-actions' }, el('a', { class: 'btn', href: `mailto:${SITE.email}?subject=Project%20enquiry` }, 'Email me'),
+      SITE.resumeUrl ? el('a', { class: 'btn btn-ghost', href: SITE.resumeUrl, target: '_blank', rel: 'noopener' }, 'Résumé (PDF)') : null),
     el('ul', { class: 'about-links' }, SITE.links.map(([label, href]) => el('li', {}, el('a', { href, target: '_blank', rel: 'noopener' }, label))))));
 }
 

@@ -10,6 +10,7 @@ export const SITE = {
   email: 'harpreetsinghuppal26@gmail.com',
   // "Classic view" goes to the earlier homepage, kept at /classic.html when the park went live.
   classicUrl: 'https://happysingh3d.com/classic.html',
+  resumeUrl: 'https://happysingh3d.com/assets/Harpreet-Singh-Resume.pdf',
   links: [
     ['Gumroad', 'https://deadhunk.gumroad.com/'],
     ['itch.io', 'https://deadhunk.itch.io/'],

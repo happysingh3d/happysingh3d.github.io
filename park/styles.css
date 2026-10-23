@@ -150,6 +150,7 @@ body[data-mode="overview"] .explore-only, body[data-mode="explore"] .overview-on
 .insp-body p { margin: 0 0 8px; max-width: 62ch; }
 .insp-meta { color: var(--muted); font-size: 14px; }
 .about p { max-width: 60ch; }
+.about-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .about-photo { display: block; width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin: 4px 0 18px; box-shadow: var(--shadow); }
 .badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: #fff3d9; color: #8a5a10; font-weight: 600; font-size: 14px; }
 .about-links { display: flex; gap: 16px; padding: 0; list-style: none; flex-wrap: wrap; }
