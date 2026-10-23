@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 
-const slug=new URLSearchParams(location.search).get('game'),allowed=['mirror-race','neon-rescue','foxfire','hive-adapt'];
-const LOTS={'hive-adapt':{id:'local-studio',width:34,depth:24,height:26}};
+const slug=new URLSearchParams(location.search).get('game'),allowed=['mirror-race','neon-rescue','foxfire','hive-adapt','afterglow'];
+const LOTS={'hive-adapt':{id:'local-studio',width:34,depth:24,height:26},'afterglow':{id:'local-studio',width:12,depth:12,height:19}};
 const OWN_PAUSE=slug==='hive-adapt'; // games with their own pause menu and HUD keep P and the corners
 const loading=document.querySelector('#loading'),scoreOutput=document.querySelector('#local-score'),pauseButton=document.querySelector('#pause');
 if(!allowed.includes(slug)){loading.textContent='This game is not in the studio. Return to the collection.';pauseButton.hidden=true;}else boot().catch(e=>{loading.hidden=false;loading.textContent='The game could not start. Return to its project and try launching again.';console.error('Game startup failed',e);});
 
 async function boot(){
  if(OWN_PAUSE){pauseButton.hidden=true;scoreOutput.hidden=true;}
+ if(slug==='afterglow'){scoreOutput.hidden=true;pauseButton.style.top='72px';} // keep clear of its own Sound button and Lift button
  const root=new URL(`./${slug}/`,import.meta.url),asset=p=>new URL(p,root).href;
  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.01,500),renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;document.body.prepend(renderer.domElement);renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label',`${slug} game. Click to focus, then use the game's movement controls.`);scene.add(new THREE.HemisphereLight(0xffffff,0x223344,1.2));
  const listeners=new Map(),keys=new Set(),buffers=new Map(),voices=new Map();let ctx=null,master=null,loop=null,frame=0,last=0,time=0,paused=false,ended=false,voiceId=0;

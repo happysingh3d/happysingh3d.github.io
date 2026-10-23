@@ -903,7 +903,7 @@ async function init() {
     flying = on; landing = false; body.dataset.flying = String(on);
     flyBtn.textContent = on ? 'Land' : 'Fly'; flyBtn.setAttribute('aria-pressed', String(on));
     flyPad.hidden = !(on && mode === 'explore');
-    if (on && !flyHintShown) { flyHintShown = true; toast(coarse ? 'Flying: use ▲ and ▼ to go up and down. Tap Land to walk again.' : 'Flying: Space up, Ctrl down, Shift faster. Drag to look; the fox flies where you look.'); }
+    if (on && !flyHintShown) { flyHintShown = true; toast(coarse ? 'Flying: use ▲ and ▼ to go up and down. Tap Land to walk again.' : 'Flying: Space up, C down, Shift faster. Drag to look; the fox flies where you look.'); }
     if (on) { avatar.position.y = Math.max(avatar.position.y, 1.2); moveTarget = null; }
   }
   $('#explore-btn').addEventListener('click', () => setMode('explore'));
@@ -912,14 +912,14 @@ async function init() {
 
   const keys = new Set(); let stick = { x: 0, y: 0 }, moveTarget = null, padUp = false, padDown = false;
   const MOVE = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
-  const FLYKEYS = ['ShiftLeft', 'ShiftRight', 'Space', 'KeyC', 'KeyQ', 'KeyE', 'ControlLeft', 'ControlRight'];
-  const UP = ['Space', 'KeyE'], DOWN = ['ControlLeft', 'ControlRight', 'KeyC', 'KeyQ'];
+  const FLYKEYS = ['ShiftLeft', 'ShiftRight', 'Space', 'KeyC', 'KeyQ', 'KeyE'];
+  const UP = ['Space', 'KeyE'], DOWN = ['KeyC', 'KeyQ'];
   const held = list => list.some(k => keys.has(k));
   const typing = () => ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName);
   addEventListener('keydown', e => {
     if (isOpen() || typing()) return;
     if (MOVE.includes(e.code) || e.code === 'KeyF') { if (mode === 'overview') setMode('explore'); }
-    if (MOVE.includes(e.code) || FLYKEYS.includes(e.code)) { keys.add(e.code); moveTarget = null; if (e.code.startsWith('Arrow') || e.code === 'Space' || (flying && e.code.startsWith('Control'))) e.preventDefault(); }
+    if (MOVE.includes(e.code) || FLYKEYS.includes(e.code)) { keys.add(e.code); moveTarget = null; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); }
     if (mode !== 'explore') return;
     if (e.code === 'KeyF') { if (flying) landing = true; else setFlying(true); }
     if (e.code === 'Space' && !flying) setFlying(true);

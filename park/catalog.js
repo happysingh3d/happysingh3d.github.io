@@ -65,6 +65,7 @@ const GAME_CONTROLS = {
   foxfire: 'WASD to run, drag or Q/E to turn the camera, Space or Shift to dash. Stand on a pad to build a lantern.',
   'mirror-race': 'W to accelerate, S to brake, Shift to boost. Steering is reversed: A turns right, D turns left.',
   'neon-rescue': 'WASD to move, Shift to sprint, R to restart. Find your friends and bring them home.',
+  afterglow: 'Drag across the sea or use A/D to aim the beam. W lifts it over rocks, S lowers it for a longer road. Space starts a run and fires a flare during play.',
   'hive-adapt': 'WASD move, mouse to look (click to capture it, Esc to free it), left click fire, right click aim, E/Q build on amber pads, G starts the wave, B gear.',
 };
 
@@ -210,6 +211,14 @@ export const BUILDINGS = [
       description: 'Find your friends in District 07 and bring everyone home before your energy runs out.', meta: 'Three.js, keyboard' }],
   },
   {
+    id: 'game-afterglow', type: 'lot', at: A(255, 111, 19), face: A(255, 111), lot: [12, 12], boxH: 19, model: 'assets/lots/afterglow-lighthouse.glb', fit: [11, 11, 18.5],
+    opens: 'game', game: 'afterglow',
+    title: 'Afterglow', sub: 'The Last Lighthouse: play the game', district: 'Games', accent: '#3fd0c9', lotLabel: 'Project 0 lot 788',
+    tagline: 'Guide seven lost sky rays home before nightfall.', controls: GAME_CONTROLS.afterglow,
+    items: [{ id: 'afterglow', title: 'The Last Lighthouse: Afterglow', kind: 'game', game: 'afterglow', cover: img('afterglow'), controls: GAME_CONTROLS.afterglow,
+      description: 'A 90-second rescue puzzle. Paint fading roads of light across a sea of cloud and guide seven lost manta rays home before night falls. Lift the beam over rocks, keep several roads alive at once, and spend two flares to calm the squall. Every ray you save counts, with three stars for a perfect night.', meta: 'Three.js, mouse or keyboard' }],
+  },
+  {
     id: 'characters', type: 'garden', at: A(0, 52, 25), face: A(0, 52), r: 13,
     title: 'Character garden', sub: 'Meet the foxes and the explorer', district: 'Characters', accent: '#8a6fd1',
     tagline: 'Characters built for Project 0. Spin them and try their moves.',
@@ -316,7 +325,7 @@ export const CHIPS = [
 // Sections for the plain list view (classic.html, kept as a no-3D fallback).
 export const GROUPS = [
   { title: '3D and animation', tagline: 'Rigs, character animation, real-time effects and product renders.', ids: ['animation', 'creatures', 'aster', 'forma', 'arc'] },
-  { title: 'Games', tagline: 'Games built for Project 0, plus Hive Adapt on itch.io.', ids: ['game-foxfire', 'game-mirror', 'game-hive', 'game-neon', 'frontier', 'itch'] },
+  { title: 'Games', tagline: 'Games built for Project 0, plus Hive Adapt on itch.io.', ids: ['game-foxfire', 'game-mirror', 'game-hive', 'game-neon', 'game-afterglow', 'frontier', 'itch'] },
   { title: 'Characters', tagline: 'Characters built for Project 0.', ids: ['characters'] },
   { title: 'Tools for artists', tagline: 'A free web toolkit and Blender add-ons on Gumroad.', ids: ['toolkit', 'shop-happy3d', ...TOOLS.map(t => `shop-${t[0]}`)] },
   { title: 'Graphic design', tagline: 'Brand identity, packaging and typography.', ids: ['design'] },
