@@ -564,13 +564,14 @@ async function init() {
     const len = Math.hypot(bx - ax, bz - az); const g = new THREE.PlaneGeometry(w, len); g.rotateX(-Math.PI / 2); g.rotateY(Math.atan2(bx - ax, bz - az));
     g.translate((ax + bx) / 2, 0.03, (az + bz) / 2); pathGeos.push(g); segs.push({ ax, az, bx, bz, hw: w / 2 + 2.5 });
   };
+  // paths, plaza and plaza ring sit a few cm apart; polygon offsets keep them from flickering at overview distance
   // six district avenues run out from the plaza; side buildings get a short path to their avenue
   for (const av of AVENUES) { const [ax, az] = A(av.angle, 17), [bx, bz] = A(av.angle, av.length); strip(ax, az, bx, bz, av.width); }
   for (const p of places) { if (p.hidden || !p.b.face || p.b.type === 'shop') continue; strip(p.front.x, p.front.z, p.b.face[0], p.b.face[1], 4); }
-  scene.add(Object.assign(new THREE.Mesh(mergeGeometries(pathGeos), M(COL.path, { roughness: 0.95 })), { receiveShadow: true }));
+  scene.add(Object.assign(new THREE.Mesh(mergeGeometries(pathGeos), M(COL.path, { roughness: 0.95, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })), { receiveShadow: true }));
 
-  const plaza = new THREE.Mesh(new THREE.CircleGeometry(18, 64), M(COL.plaza, { roughness: 0.95 })); plaza.rotation.x = -Math.PI / 2; plaza.position.set(PLAZA[0], 0.04, PLAZA[1]); plaza.receiveShadow = true; scene.add(plaza);
-  const plazaRing = new THREE.Mesh(new THREE.RingGeometry(14.2, 14.8, 64), M(0xcfc2a6)); plazaRing.rotation.x = -Math.PI / 2; plazaRing.position.set(PLAZA[0], 0.05, PLAZA[1]); scene.add(plazaRing);
+  const plaza = new THREE.Mesh(new THREE.CircleGeometry(18, 64), M(COL.plaza, { roughness: 0.95, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 })); plaza.rotation.x = -Math.PI / 2; plaza.position.set(PLAZA[0], 0.04, PLAZA[1]); plaza.receiveShadow = true; scene.add(plaza);
+  const plazaRing = new THREE.Mesh(new THREE.RingGeometry(14.2, 14.8, 64), M(0xcfc2a6, { polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 })); plazaRing.rotation.x = -Math.PI / 2; plazaRing.position.set(PLAZA[0], 0.05, PLAZA[1]); scene.add(plazaRing);
   keepCircle(PLAZA[0], PLAZA[1], 23);
   // ---------- fountain: a real basin with rippling, reflective water, rising jets and falling spray ----------
   const WATER_Y = 0.72, FX = PLAZA[0], FZ = PLAZA[1], stoneM = M(0xe9e2d2, { roughness: 0.75 });
